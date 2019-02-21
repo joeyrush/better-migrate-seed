@@ -1,0 +1,14 @@
+{
+    "name": "joeyrush/better-migrate-seed",
+    "description": "An alternative migrate:fresh --seed command which allows you to create a group of seeders from your cexisting data and/or playback a group of seeders",
+    "require": {
+        "orangehill/iseed": "^2.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joe Rushton",
+            "email": "joe_rushton@hotmail.co.uk"
+        }
+    ]
+}
