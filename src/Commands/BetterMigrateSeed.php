@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use JoeyRush\BetterMigrateSeed\SeedGroup;
+use JoeyRush\BetterMigrateSeed\SeedOptions;
 
 class BetterMigrateSeed extends Command
 {
@@ -29,6 +31,8 @@ class BetterMigrateSeed extends Command
      */
     protected $connection;
 
+    protected $baseSeedFolder;
+
     /**
      * Create a new command instance.
      *
@@ -38,6 +42,7 @@ class BetterMigrateSeed extends Command
     {
         parent::__construct();
         $this->connection = DB::getDoctrineConnection();
+        $this->baseSeedFolder = config('iseed::config.path');
     }
 
     /**
@@ -50,11 +55,11 @@ class BetterMigrateSeed extends Command
         $message = 'Do you want to generate a set of seeders from your current data before doing a fresh migrate?';
         if ($this->confirm($message)) {
             $directory = $this->ask('Give the seeders a name (defaults to the current timestamp)') ?? time();
-            $this->seedGroup = new SeedGroup($directory);
+            $this->seedGroup = new SeedGroup($directory, $this->baseSeedFolder);
 
             // Make sure the directory exists
             if (! File::isDirectory($this->seedGroup->folderAbsolutePath)) {
-                $this->line("Creating $this->seedGroup->folder directory");
+                $this->line("Creating {$this->seedGroup->folder} directory");
                 File::makeDirectory($this->seedGroup->folderAbsolutePath);
             }
 
@@ -70,8 +75,8 @@ class BetterMigrateSeed extends Command
             }
         }
 
-        $seedOptions = SeedOptions::get($this->seedGroup->baseSeedFolder);
-        $choice = $this->choice('Which scenario would you like to seed?', $seedOptions->toArray());
+        $seedOptions = SeedOptions::get($this->baseSeedFolder);
+        $choice = $this->choice('Which scenario would you like to seed?', $seedOptions->toArray(), 0);
         
         if ($choice == $seedOptions->getDefault()) {
             Artisan::call('migrate:fresh', ['--seed' => true], $this->output);
@@ -89,7 +94,7 @@ class BetterMigrateSeed extends Command
         $this->line("Setting up seeders from your database");
         Artisan::call('iseed', [
             'tables' => implode(',', $tableNames),
-            '--classnameprefix' => $this->seedGroup->folder,
+            '--classnameprefix' => $this->seedGroup->name(),
             '--force' => true,
         ], $this->output);
     }
@@ -98,18 +103,18 @@ class BetterMigrateSeed extends Command
     {
         // Make sure theres a base seeder in the specified directory.
         $this->line("Creating base seeder (DatabaseSeeder.php) for the {$this->seedGroup->folder} directory");
-        Artisan::call("make:seeder", ['name' => "{$this->seedGroup->folder}/DatabaseSeeder"], $this->output);
+        Artisan::call("make:seeder", ['name' => "{$this->seedGroup->name()}/DatabaseSeeder"], $this->output);
     }
 
     public function prefixBaseSeeder()
     {
         // Fix the class name and put it in the correct filename.
-        $baseSeederClassName = $this->seedGroup->folder . 'DatabaseSeeder';
+        $baseSeederClassName = $this->seedGroup->name() . 'DatabaseSeeder';
         $databaseSeederContents = File::get($this->seedGroup->folderAbsolutePath . "/DatabaseSeeder.php");
         $this->line("Prefixing the base DatabaseSeeder class to match the name you provided to avoid class collisions");
         File::put(
             $this->seedGroup->folderAbsolutePath . '/' . $baseSeederClassName . '.php',
-            str_replace("{$this->seedGroup->folder}/DatabaseSeeder", $baseSeederClassName, $databaseSeederContents)
+            str_replace("{$this->seedGroup->name()}/DatabaseSeeder", $baseSeederClassName, $databaseSeederContents)
         );
 
         // Remove the incorrectly named one to avoid collisions with the default database seeder class
