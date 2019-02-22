@@ -10,5 +10,10 @@
             "name": "Joe Rushton",
             "email": "joe_rushton@hotmail.co.uk"
         }
-    ]
+    ],
+    "laravel": {
+        "providers": [
+            "JoeyRush\\BetterMigrateSeed\\BetterMigrateSeedServiceProvider"
+        ]
+    }
 }
