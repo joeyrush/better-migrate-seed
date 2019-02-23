@@ -13,9 +13,9 @@ class MigrateGroupSeed implements SeedStrategyContract
         $this->choice = $choice;
     }
 
-    public function execute()
+    public function execute(string $migrationCommandType)
     {
-        Artisan::call('migrate:fresh', [], $this->outputBuffer());
+        Artisan::call("migrate:$migrationCommandType", [], $this->outputBuffer());
         Artisan::call('db:seed', ['--class' => $this->choice . 'DatabaseSeeder'], $this->outputBuffer());
     }
 

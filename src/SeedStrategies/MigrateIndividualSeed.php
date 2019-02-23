@@ -14,7 +14,7 @@ class MigrateIndividualSeed implements SeedStrategyContract
         $this->getChoiceCallback = $getChoiceCallback;
     }
 
-    public function execute()
+    public function execute(string $migrationCommandType)
     {
         $files = $this->getSeedListFromDirectoryContents(
             $this->getDirContents(base_path() . $this->baseSeedFolder)
@@ -22,7 +22,7 @@ class MigrateIndividualSeed implements SeedStrategyContract
 
         $choice = ($this->getChoiceCallback)($files->toArray());
 
-        Artisan::call('migrate:fresh', [], $this->outputBuffer());
+        Artisan::call("migrate:$migrationCommandType", [], $this->outputBuffer());
         Artisan::call('db:seed', ['--class' => $choice], $this->outputBuffer());
     }
 

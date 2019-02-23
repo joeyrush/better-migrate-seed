@@ -3,7 +3,7 @@ namespace JoeyRush\BetterMigrateSeed\SeedStrategies;
 
 use Illuminate\Support\Facades\Artisan;
 
-class DefaultMigrateSeed implements SeedStrategyContract
+class MigrateWithoutSeeding implements SeedStrategyContract
 {
     private $output;
 
@@ -14,7 +14,7 @@ class DefaultMigrateSeed implements SeedStrategyContract
 
     public function execute(string $migrationCommandType)
     {
-        Artisan::call("migrate:$migrationCommandType", ['--seed' => true], $this->outputBuffer());
+        Artisan::call("migrate:$migrationCommandType", [], $this->outputBuffer());
     }
 
     public function outputBuffer()

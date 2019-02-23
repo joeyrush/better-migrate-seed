@@ -3,7 +3,7 @@ namespace JoeyRush\BetterMigrateSeed\SeedStrategies;
 
 interface SeedStrategyContract
 {
-    public function execute();
+    public function execute(string $migrationCommandType);
 
     public function outputBuffer();
 }

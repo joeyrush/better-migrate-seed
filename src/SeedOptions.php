@@ -5,6 +5,8 @@ class SeedOptions
 {
     private $default;
 
+    private $none;
+
     private $other;
 
     private $list;
@@ -14,12 +16,13 @@ class SeedOptions
         $subDirectories = glob(base_path() . "$seedDir/*", GLOB_ONLYDIR);
 
         $this->default = 'Default Seeder (DatabaseSeeder.php)';
+        $this->none = 'None (migrate without seeding)';
         $this->other = 'Other (run a specific seeder)';
 
         $this->list = collect($subDirectories)->map(function ($dirname) {
             $parts = explode('/', $dirname);
             return array_pop($parts);
-        })->prepend($this->other)->prepend($this->default);
+        })->prepend([$this->default, $this->none, $this->other]);
     }
 
     public static function get($seedDir)
@@ -29,7 +32,7 @@ class SeedOptions
 
     public function toArray()
     {
-        return $this->list->toArray();
+        return $this->list->flatten()->toArray();
     }
 
     public function getDefault()
@@ -40,5 +43,10 @@ class SeedOptions
     public function getOther()
     {
         return $this->other;
+    }
+
+    public function getNone()
+    {
+        return $this->none;
     }
 }
