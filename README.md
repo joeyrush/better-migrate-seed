@@ -6,7 +6,7 @@ The command takes the signature `artisan seed:migrate`
 
 Upon running the command, you'll be presented with the option to generate a complete set of seeders based on your current database. The goal here is to make it **super** easy to switch between different database states for local development.
 
-**Example:** you've noticed a bug in your application based on some data you've setup through testing and you want to be able to easily recreate this scenario at a later date. You could either export the data or manually set up seeders, but both require some context switching. With this package, you can just run the same command that migrates and seeds your database to both create a set of seeders or run a previously generated batch.
+**Example:** you've noticed a bug in your application based on some data you've setup through testing and you want to be able to easily recreate this scenario at a later date. You could either export the data or manually set up seeders, but both require some context switching. With this package, you can just run the same command that migrates and seeds your database to either create a set of seeders or run a previously generated batch (or both).
 
 ### Available Commands
 There are 3 commands available with this package:
