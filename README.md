@@ -11,12 +11,12 @@ Upon running the command, you'll be presented with the option to generate a comp
 ### Available Commands
 There are 3 commands available with this package:
 
-A step in replacement for `artisan migrate:fresh --seed` with additional functionality to generate seeders and pick which seeders to use after re-migrating. You can pass the `--refresh` flag to use `migrate:refresh` instead of `fresh` behind the scenes.
+A step in replacement for `artisan migrate:fresh --seed` with additional functionality to generate seeders and pick which seeders to use after re-migrating. You can pass the `--refresh` flag to use `migrate:refresh` instead of `migrate:fresh` behind the scenes:
 ```
 artisan seed:migrate
 ```
 
-To generate the seeders without having to do a fresh migrate, you can run the following command:
+To generate the seeders without having to do a re-migrate your DB, you can run the following command:
 ```
 artisan seed:generate
 ```
