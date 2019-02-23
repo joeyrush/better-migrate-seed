@@ -1,12 +1,10 @@
 # Better Migrate Seed
-A wrapper around the `artisan migrate:fresh --seed` command in Laravel which provides some extra quality of life functionality to assist during development. 
+A wrapper around the `artisan migrate:fresh --seed` command in Laravel with some added quality of life functionality to assist during development.
 
 ## Overview
-The command takes the signature `artisan seed:migrate`
+This package allows you to create a snapshot of your database by generating a series of seeders (1 per table, plus a base seeder which calls all of the seeders) which sit within a named sub-directory in your `database/seeds` directory. You can then use these grouped seeders to populate your database from scratch after a fresh migrate - all within the same command.
 
-Upon running the command, you'll be presented with the option to generate a complete set of seeders based on your current database. The goal here is to make it **super** easy to switch between different database states for local development.
-
-**Example:** you've noticed a bug in your application based on some data you've setup through testing and you want to be able to easily recreate this scenario at a later date. You could either export the data or manually set up seeders, but both require some context switching. With this package, you can just run the same command that migrates and seeds your database to either create a set of seeders or run a previously generated batch (or both).
+> You're free to customize the generated seeders, but be aware that if you generate another snapshot with an identical name - the new ones will overwrite the old ones.
 
 ### Available Commands
 There are 3 commands available with this package:
@@ -26,6 +24,9 @@ To delete a set of seeders generated with any of the previous two commands (this
 artisan seed:delete
 ```
 
+### Notes
+The name you supply to the seed generator will have spaces stripped out and be pascal-cased before being used as the sub-folder name and seeder class prefix. If you don't provide a name, it will generate one based on the current UNIX timestamp.
+
 ## Requirements
 - Laravel 5.3.8+
 
@@ -36,7 +37,7 @@ You can install the package via composer:
 composer require joeyrush/better-migrate-seed
 ```
 
-Assuming you're on Laravel 5.5+ with auto-package discovery, you should be able to run `php artisan migrate:seed`. If you're rocking an earlier version, you'll have to add the service provider to the "providers" key in `config/app.php`
+Assuming you're on Laravel 5.5+ with auto-package discovery, you should be able to run the commands straight away. If you're rocking an earlier version, you'll have to add the service provider to the "providers" key in `config/app.php`
 
 ```php
 'providers' => [
