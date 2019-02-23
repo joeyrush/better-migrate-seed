@@ -11,6 +11,11 @@
             "email": "joe_rushton@hotmail.co.uk"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "JoeyRush\\BetterMigrateSeed\\": "src"
+        },
+    },
     "extra": {
         "laravel": {
             "providers": [
