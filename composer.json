@@ -14,7 +14,7 @@
     "autoload": {
         "psr-4": {
             "JoeyRush\\BetterMigrateSeed\\": "src"
-        },
+        }
     },
     "extra": {
         "laravel": {
