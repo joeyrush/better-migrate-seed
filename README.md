@@ -16,7 +16,7 @@ A step in replacement for `artisan migrate:fresh --seed` with additional functio
 artisan seed:migrate
 ```
 
-To generate the seeders without having to do a re-migrate your DB, you can run the following command:
+To generate the seeders without having to re-migrate your DB, you can run the following command:
 ```
 artisan seed:generate
 ```
