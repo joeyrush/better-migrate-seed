@@ -11,7 +11,7 @@ class SeedOptions
 
     private $list;
 
-    private function __construct($seedDir)
+    private function __construct($seedDir, $onlyIncludeGroups = false)
     {
         $subDirectories = glob(base_path() . "$seedDir/*", GLOB_ONLYDIR);
 
@@ -22,7 +22,16 @@ class SeedOptions
         $this->list = collect($subDirectories)->map(function ($dirname) {
             $parts = explode('/', $dirname);
             return array_pop($parts);
-        })->prepend([$this->default, $this->none, $this->other]);
+        });
+
+        if (! $onlyIncludeGroups) {
+            $this->list->prepend([$this->default, $this->none, $this->other]);
+        }
+    }
+
+    public static function getGroupsOnly($seedDir)
+    {
+        return new self($seedDir, $onlyIncludeGroups = true);
     }
 
     public static function get($seedDir)
@@ -48,5 +57,10 @@ class SeedOptions
     public function getNone()
     {
         return $this->none;
+    }
+
+    public function __call($method, $args)
+    {
+        return $this->list->$method($args);
     }
 }

@@ -3,10 +3,6 @@
 namespace JoeyRush\BetterMigrateSeed\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use JoeyRush\BetterMigrateSeed\SeedGroup;
 use JoeyRush\BetterMigrateSeed\SeedOptions;
 use JoeyRush\BetterMigrateSeed\SeedStrategies\DefaultMigrateSeed;
 use JoeyRush\BetterMigrateSeed\SeedStrategies\MigrateGroupSeed;
