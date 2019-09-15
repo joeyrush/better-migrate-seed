@@ -47,6 +47,11 @@ class GenerateSeedersFromDatabase extends Command
     public function __construct()
     {
         parent::__construct();
+
+        // Prevent an exception being thrown if one of the DB tables contains an 'enum'.
+        // We don't care about the column types, it's just to get a list of table names!
+        DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+
         $this->connection = DB::getDoctrineConnection();
         $this->baseSeedFolder = config('iseed::config.path');
     }
