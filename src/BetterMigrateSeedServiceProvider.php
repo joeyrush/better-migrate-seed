@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use JoeyRush\BetterMigrateSeed\Commands\BetterMigrateSeed;
 use JoeyRush\BetterMigrateSeed\Commands\DeleteSeedGroups;
 use JoeyRush\BetterMigrateSeed\Commands\GenerateSeedersFromDatabase;
+use JoeyRush\BetterMigrateSeed\Commands\RenameSeedGroups;
 
 class BetterMigrateSeedServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,7 @@ class BetterMigrateSeedServiceProvider extends ServiceProvider
                 GenerateSeedersFromDatabase::class,
                 BetterMigrateSeed::class,
                 DeleteSeedGroups::class,
+                RenameSeedGroups::class,
             ]);
         }
     }

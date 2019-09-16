@@ -15,7 +15,7 @@ class GenerateSeedersFromDatabase extends Command
      *
      * @var string
      */
-    protected $signature = 'seed:generate';
+    protected $signature = 'seed:generate {--include-empty-tables}';
 
     /**
      * The console command description.
@@ -87,7 +87,7 @@ class GenerateSeedersFromDatabase extends Command
      */
     private function createSeedersFromExistingData() : void
     {
-        $tableNames = $this->getTableNames();
+        $tableNames = $this->getTableNames($this->option('include-empty-tables'));
         $tableNames = array_diff($tableNames, ['migrations']);
 
         $this->line("Setting up seeders from your database");
@@ -140,7 +140,7 @@ class GenerateSeedersFromDatabase extends Command
         }
     }
 
-    private function getTableNames() : array
+    private function getTableNames($includeEmptyTables = false) : array
     {
         $sm = $this->connection->getSchemaManager();
         $databaseName = $this->connection->getDatabase();
@@ -150,7 +150,11 @@ class GenerateSeedersFromDatabase extends Command
 
         $shortTableNames = str_replace("$databaseName.", '', $tableNames);
 
-        return $shortTableNames;
+        return $includeEmptyTables
+            ? $shortTableNames
+            : collect($shortTableNames)->filter(function ($tableName) {
+                return DB::table($tableName)->count();
+            })->toArray();
     }
 
     private function dumpAutoload()

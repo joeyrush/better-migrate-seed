@@ -7,12 +7,13 @@ This package allows you to create a snapshot of your database by generating a se
 > You're free to customize the generated seeders, but be aware that if you generate another snapshot with an identical name - the new ones will overwrite the old ones.
 
 ### Available Commands
-There are 3 commands available with this package:
+There are 4 commands available with this package:
 
 A step in replacement for `artisan migrate:fresh --seed` with additional functionality to generate seeders and pick which seeders to use after re-migrating. You can pass the `--refresh` flag to use `migrate:refresh` instead of `migrate:fresh` behind the scenes:
 ```
 artisan seed:migrate
 ```
+> The migrate command also comes with a bonus `--include-empty-tables` flag which will produce a seed class for every database table regardless of whether it has any rows or not.
 
 To generate the seeders without having to re-migrate your DB, you can run the following command:
 ```
@@ -22,6 +23,11 @@ artisan seed:generate
 To delete a set of seeders generated with any of the previous two commands (this will prompt before deletion):
 ```
 artisan seed:delete
+```
+
+To rename a set of generated seeders (renames folder/filename/classname and references!)
+```
+artisan seed:rename
 ```
 
 ### Notes
